@@ -1,4 +1,6 @@
-char tetrisPieces[7 /*kinds of a piece*/][4 /*rotation*/][5 /*horizontal*/][5 /*vertical*/] = {
+#ifndef _BLOCKS_
+#define _BLOCKS_
+char tetrisBlocks[7 /*kinds of a piece*/][4 /*rotation*/][5 /*horizontal*/][5 /*vertical*/] = {
     // Square
     {
         {
@@ -215,6 +217,6 @@ char tetrisPieces[7 /*kinds of a piece*/][4 /*rotation*/][5 /*horizontal*/][5 /*
             {0,0,0,0,0},
             {0,0,0,0,0}
         }
-
     }
 };
+#endif

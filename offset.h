@@ -1,4 +1,6 @@
-int tetrisPiecesInitialPosition[7 /*kinds of a piece*/][4 /*rotation*/][2 /*offset*/] = {
+#ifndef _OFFSET_
+#define _OFFSET_
+int tetrisBlocksInitialPosition[7 /*kinds of a piece*/][4 /*rotation*/][2 /*offset*/] = {
     // Square
     {
         {-2,-3},
@@ -48,5 +50,5 @@ int tetrisPiecesInitialPosition[7 /*kinds of a piece*/][4 /*rotation*/][2 /*offs
         {-2,-3},
         {-2,-2},
     },
-
 };
+#endif
