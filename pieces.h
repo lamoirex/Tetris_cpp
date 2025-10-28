@@ -1,6 +1,11 @@
 #ifndef _PIECES_
 #define _PIECES_
 
+// ------ Includes ------
+
+#include "blocks.h"
+#include "offset.h"
+
 // ------ Pieces ------
 class Pieces
 {

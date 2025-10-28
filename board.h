@@ -4,6 +4,7 @@
 
 #include "pieces.h"
 #include "blocks.h"
+#include "offset.h"
 
 // ------ Defines ------
 
