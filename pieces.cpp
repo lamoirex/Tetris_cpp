@@ -1,5 +1,9 @@
-#ifndef _BLOCKS_
-#define _BLOCKS_
+// ----- Includes -----
+
+#include "Pieces.h"
+
+// ----- Tetris Blocks -----
+
 char tetrisBlocks[7 /*kinds of a piece*/][4 /*rotation*/][5 /*horizontal*/][5 /*vertical*/] = {
     // Square
     {
@@ -219,4 +223,78 @@ char tetrisBlocks[7 /*kinds of a piece*/][4 /*rotation*/][5 /*horizontal*/][5 /*
         }
     }
 };
-#endif
+
+// ----- Offset -----
+int tetrisBlocksInitialPosition[7 /*kinds of a piece*/][4 /*rotation*/][2 /*offset*/] = {
+    // Square
+    {
+        {-2,-3},
+        {-2,-3},
+        {-2,-3},
+        {-2,-3}
+    },
+    // "|" block(vertical/horizontal block)
+    {
+        {-2,-2},
+        {-2,-3},
+        {-2,-2},
+        {-2,-3}
+    },
+    // "L" block
+    {
+        {-2,-3},
+        {-2,-3},
+        {-2,-3},
+        {-2,-2},
+    },
+    // "L mirrored" block
+    {
+        {-2,-3},
+        {-2,-2},
+        {-2,-3},
+        {-2,-3},
+    },
+    // "N" block
+    {
+        {-2,-3},
+        {-2,-2},
+        {-2,-3},
+        {-2,-3},
+    },
+    // "N mirrored" block
+    {
+        {-2,-3},
+        {-2,-3},
+        {-2,-3},
+        {-2,-2},
+    },
+    // "T" block
+    {
+        {-2,-3},
+        {-2,-3},
+        {-2,-3},
+        {-2,-2},
+    },
+};
+
+// ----- Class: Pieces -----
+
+/*Returns the type of a block (0 = no-block, 1 = normal block, 2 = pivot block)*/
+int Pieces::getBlockType(int pPiece, int pRotation, int pX, int pY)
+{
+    return tetrisBlocks[pPiece][pRotation][pX][pY];
+}
+
+/*Returns the horizontal displacement of the piece that has to be applied in order to create it in the
+correct position.*/
+int Pieces::getXInitialPosition(int pPiece, int pRotation)
+{
+    return tetrisBlocksInitialPosition[pPiece][pRotation][0];
+}
+
+/*Returns the vertical displacement of the piece that has to be applied in order to create it in the
+correct position.*/
+int Pieces::getYInitialPosition(int pPiece, int pRotation)
+{
+    return tetrisBlocksInitialPosition[pPiece][pRotation][1];
+}

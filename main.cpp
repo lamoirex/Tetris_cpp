@@ -1,6 +1,4 @@
 #include <iostream>
-#include "blocks.h"
-#include "offset.h"
 #include "pieces.h"
 #include "board.h"
 
