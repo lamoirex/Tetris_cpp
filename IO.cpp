@@ -16,6 +16,12 @@ IO::IO()
     initGraph();
 };
 
+void boxColor(SDL_Surface *screen, int x1, int y1, int x2, int y2, Uint32 color)
+{
+    SDL_Rect rect{ x1, y1, x2-x1, y2-y1 };
+    SDL_FillRect(screen, &rect, color);
+}
+
 /*Clear the screen to black*/
 void IO::clearScreen()
 {
