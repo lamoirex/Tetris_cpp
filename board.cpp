@@ -31,7 +31,7 @@ void Board::storePiece(int pX, int pY, int pPiece, int pRotation)
         for(int j1 = pY, j2 = 0; j1 < pY + PIECE_BLOCKS; j1++, j2++)
         {
             // Store only the blocks of the piece that are not holes
-            if (tetrisBlocks->getBlockType(pPiece, pRotation, j2, i2) != 0)
+            if (tetrisBlocks->getBlockType(pPiece, pRotation, i2, j2) != 0) // Поменяйте i2, j2 местами
                 mBoard[i1][j1] = POS_FILLED;
         }
     }
@@ -98,25 +98,21 @@ int Board::getYPosInPixels(int pPos)
 Returns true if the movement is possible, false if it not possible*/
 bool Board::isPossibleMovement(int pX, int pY, int pPiece, int pRotation) 
 {
-    // Checks collision with pieces already stored in the board or the board limits
     for(int i1 = pX, i2 = 0; i1 < pX + PIECE_BLOCKS; i1++, i2++)
     {
         for(int j1 = pY, j2 = 0; j1 < pY + PIECE_BLOCKS; j1++, j2++)
         {
-            // Check if the piece is outside the limits of the board
             if( i1 < 0 || i1 > BOARD_WIDTH - 1 || j1 > BOARD_HEIGHT -1)
             {
-                if (tetrisBlocks->getBlockType(pPiece, pRotation, j2, i2) != 0)
+                if (tetrisBlocks->getBlockType(pPiece, pRotation, i2, j2) != 0) // Поменяйте местами
                     return 0;
             }
-            // Check if the piece have collisioned with a block already stored in the map
             if(j1 >= 0)
             {
-                if ((tetrisBlocks->getBlockType(pPiece, pRotation, j2, i2) != 0) && (!isFreeBlock(i1,j1)) )
+                if ((tetrisBlocks->getBlockType(pPiece, pRotation, i2, j2) != 0) && (!isFreeBlock(i1,j1)) ) // Поменяйте местами
                     return false;
             }
         }
     }
-    // No collision
     return true;
 };

@@ -4,11 +4,9 @@
 // ------ Includes ------
 
 #ifndef LINUX
-#include "SDL/include/SDL.h"
-#include "SDL/SDL_GfxPrimitives/SDL_gfxPrimitives.h"
+#include "SDL/include/SDL2/SDL.h"
 #else
 #include <SDL/SDL.h>
-#include "SDL/SDL_GfxPrimitives/sdl_gfxprimitives.h"
 #endif
 #pragma comment (lib, "SDL/lib/SDL.lib")
 #pragma comment (lib, "SDL/SDL_GfxPrimitives/SDL_GfxPrimitives_Static.lib")
@@ -32,6 +30,11 @@ class IO
     int getKey();
     int isKeyDown(int pKey);
     void updateScreen();
+    
+    private:
+    static SDL_Surface *mScreen;
+    static SDL_Window *mWindow;  // Добавьте эту строку
+    static Uint32 mColors[COLOR_MAX];
 };
 
 #endif

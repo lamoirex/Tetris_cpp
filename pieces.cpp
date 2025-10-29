@@ -282,7 +282,7 @@ int tetrisBlocksInitialPosition[7 /*kinds of a piece*/][4 /*rotation*/][2 /*offs
 /*Returns the type of a block (0 = no-block, 1 = normal block, 2 = pivot block)*/
 int Pieces::getBlockType(int pPiece, int pRotation, int pX, int pY)
 {
-    return tetrisBlocks[pPiece][pRotation][pX][pY];
+    return tetrisBlocks[pPiece][pRotation][pY][pX];
 }
 
 /*Returns the horizontal displacement of the piece that has to be applied in order to create it in the

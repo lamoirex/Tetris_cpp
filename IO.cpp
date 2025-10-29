@@ -1,52 +1,47 @@
 // ------ Includes -----
-
 #include "IO.h"
+#include <iostream>
+#include <cstdlib>
 
-static SDL_Surface *mScreen;										// Screen
-static Uint32 mColors [COLOR_MAX] = {0x000000ff,					// Colors
-                               0xff0000ff, 0x00ff00ff, 0x0000ffff,
-                               0x00ffffff, 0xff00ffff, 0xffff00ff,
-                               0xffffffff};
+SDL_Surface *IO::mScreen = nullptr;
+SDL_Window *IO::mWindow = nullptr;
 
-// ------ Class: IO -----
+Uint32 IO::mColors[COLOR_MAX] = {
+    0x000000ff, 0xff0000ff, 0x00ff00ff, 0x0000ffff,
+    0x00ffffff, 0xff00ffff, 0xffff00ff, 0xffffffff
+};
 
-/*Init*/
 IO::IO()
 {
     initGraph();
 };
 
-void boxColor(SDL_Surface *screen, int x1, int y1, int x2, int y2, Uint32 color)
+static void boxColor(SDL_Surface *screen, int x1, int y1, int x2, int y2, Uint32 color)
 {
-    SDL_Rect rect{ x1, y1, x2-x1, y2-y1 };
+    SDL_Rect rect{ x1, y1, x2-x1+1, y2-y1+1 };
     SDL_FillRect(screen, &rect, color);
 }
 
-/*Clear the screen to black*/
 void IO::clearScreen()
 {
     boxColor(mScreen, 0, 0, mScreen->w - 1, mScreen->h - 1, mColors[BLACK]);
 };
 
-/*Draw a rectangle of a given color*/
 void IO::drawRectangle(int pX1, int pY1, int pX2, int pY2, enum color pC)
 {
-    boxColor(mScreen, pX1, pY1, pX2, pY2-1, mColors[pC]);
+    boxColor(mScreen, pX1, pY1, pX2, pY2, mColors[pC]);
 };
 
-/*Return the screen height*/
 int IO::getScreenHeight()
 {
     return mScreen->h;
 };
 
-/*Update screen*/
 void IO::updateScreen()
 {
-    SDL_Flip(mScreen);
+    SDL_UpdateWindowSurface(mWindow);
 };
 
-/*Keyboard Input*/
 int IO::pollKey()
 {
     SDL_Event event;
@@ -62,7 +57,6 @@ int IO::pollKey()
     return -1;
 };
 
-/*Keyboard Input*/
 int IO::getKey()
 {
     SDL_Event event;
@@ -77,43 +71,41 @@ int IO::getKey()
     return event.key.keysym.sym;
 };
 
-/*Keyboard Input*/
 int IO::isKeyDown(int pKey)
 {
-    Uint8* mKeytable;
+    const Uint8* mKeytable;
     int mNumkeys;
     SDL_PumpEvents();
-    mKeytable = SDL_GetKeyState(&mNumkeys);
+    mKeytable = SDL_GetKeyboardState(&mNumkeys);
     return mKeytable[pKey];
 };
 
-/*SDL Graphical Initialization*/
 int IO::initGraph()
 {
-    const SDL_VideoInfo *info;
-    Uint8 video_bpp;
-    Uint32 videoflags;
-
-    // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         fprintf(stderr, "Couldn't initialize SDL: %s\n", SDL_GetError());
         return 1;
     }
-    atexit(SDL_Quit);
 
-    // Alpha blending doesn't work well at 8-bit color
-    info = SDL_GetVideoInfo();
-    if(info->vfmt->BitsPerPixel > 8) {
-        video_bpp = info->vfmt->BitsPerPixel;
-    } else {
-        video_bpp = 16;
-    }
-    videoflags = SDL_SWSURFACE | SDL_DOUBLEBUF;
-
-    // set 640x480 video mode
-    if ( (mScreen = SDL_SetVideoMode(640,480,video_bpp,videoflags) ) == NULL) {
-        fprintf(stderr, "Couldn't set %ix%i video mode: %s\n",640,480,SDL_GetError());
+    mWindow = SDL_CreateWindow("Tetris", 
+                              SDL_WINDOWPOS_CENTERED, 
+                              SDL_WINDOWPOS_CENTERED,
+                              640, 480, 
+                              SDL_WINDOW_SHOWN);
+    if (!mWindow) {
+        fprintf(stderr, "Couldn't create window: %s\n", SDL_GetError());
+        SDL_Quit();
         return 2;
     }
+
+    mScreen = SDL_GetWindowSurface(mWindow);
+    if (!mScreen) {
+        fprintf(stderr, "Couldn't get window surface: %s\n", SDL_GetError());
+        SDL_DestroyWindow(mWindow);
+        SDL_Quit();
+        return 3;
+    }
+
     return 0;
 }
+

@@ -3,7 +3,6 @@
 #include <windows.h>
 #endif
 
-//int main(void) 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
     // ------ Vars ------
@@ -20,7 +19,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     Game mGame(&mBoard, &tetrisBlocks, &mIO, mScreenHeight);
 
     // Get the actual clock milliseconds (SDL)
-    unsigned long mTime1 = SDL_GetTicks();
+    unsigned long mTime1 = SDL_GetTicks64();
     
     // ------ Main Loop ------
     while (!mIO.isKeyDown(SDLK_ESCAPE))
@@ -83,7 +82,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         }
         // ------ Vertical movement ------
 
-        unsigned long mTime2 = SDL_GetTicks();
+        unsigned long mTime2 = SDL_GetTicks64();
 
         if((mTime2 - mTime1) > WAIT_TIME)
         {
@@ -106,7 +105,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 mGame.createNewPiece();
             }
 
-            mTime1 = SDL_GetTicks();
+            mTime1 = SDL_GetTicks64();
         }
 
     }

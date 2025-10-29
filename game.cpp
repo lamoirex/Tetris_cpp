@@ -1,6 +1,7 @@
 // ------ Includes -----
 
 #include "game.h"
+#include <iostream>
 
 // ------ Class: Game -----
 
@@ -55,38 +56,43 @@ void Game::createNewPiece()
     // Random next piece
     mNextPiece = getRand(0,6);
     mNextRotation = getRand(0,3);
+    
 };
 
 /*Draw piece*/
 void Game::drawPiece(int pX, int pY, int pPiece, int pRotation)
 {
-    color mColor; // Color of the block
+    color mColor;
 
-    // Obtain the position in pixel in the screen of the block we want to draw
     int mPixelsX = mBoard->getXPosInPixels(pX);
     int mPixelsY = mBoard->getYPosInPixels(pY);
 
-    // Travel the matrix of blocks of the piece and draw the blocks that are filled
-    for (int i = 0; i < PIECE_BLOCKS; i++)
+    for (int y = 0; y < PIECE_BLOCKS; y++)  // y - вертикальная координата в матрице фигуры
     {
-        for (int j = 0; j < PIECE_BLOCKS; j++)
+        for (int x = 0; x < PIECE_BLOCKS; x++)  // x - горизонтальная координата в матрице фигуры
         {
-            // Get the type of the block and draw it with the correct color
-            switch (tetrisBlocks->getBlockType(pPiece, pRotation, j, i))
+            // Получаем тип блока
+            int blockType = tetrisBlocks->getBlockType(pPiece, pRotation, x, y);
+            
+            if (blockType == 0) continue; // Пропускаем пустые блоки
+
+            // Выбираем цвет
+            switch (blockType)
             {
-            case 1: mColor = GREEN; break; //For each block of the piece except the pivot
-            case 2: mColor = BLUE; break; // For the pivot
+            case 1: mColor = GREEN; break; // Обычный блок
+            case 2: mColor = BLUE; break;  // Центральный блок (pivot)
             }
 
-            if (tetrisBlocks->getBlockType(pPiece, pRotation, j, i) != 0)
-                mIO->drawRectangle(mPixelsX + i*BLOCK_SIZE, mPixelsY + j*BLOCK_SIZE,
-                                    (mPixelsX + i * BLOCK_SIZE) + BLOCK_SIZE - 1,
-                                     (mPixelsY + j * BLOCK_SIZE) + BLOCK_SIZE - 1,
-                                      mColor);
+            // Рисуем блок
+            // x - горизонтальное смещение, y - вертикальное смещение
+            mIO->drawRectangle(mPixelsX + x * BLOCK_SIZE, 
+                              mPixelsY + y * BLOCK_SIZE,
+                              mPixelsX + x * BLOCK_SIZE + BLOCK_SIZE - 1,
+                              mPixelsY + y * BLOCK_SIZE + BLOCK_SIZE - 1,
+                              mColor);
         }
     }
-};
-
+}
 /*Draw the two lines that delimit the board*/
 void Game::drawBoard()
 {
@@ -116,7 +122,7 @@ void Game::drawBoard()
                 mIO->drawRectangle(mX1 + i*BLOCK_SIZE, mY + j*BLOCK_SIZE,
                                     (mX1 + i*BLOCK_SIZE) + BLOCK_SIZE - 1,
                                      (mY + j*BLOCK_SIZE) + BLOCK_SIZE - 1,
-                                      RED);
+                                      BLUE);
         }
     }
 };
@@ -124,7 +130,8 @@ void Game::drawBoard()
 /*Draw all the objects of the scene*/
 void Game::drawScene()
 {
-    drawBoard(); // Draw the delimitation lines and blocks stored in the board
-    drawPiece(mPosX, mPosY, mPiece, mRotation); // Draw the playing piece
-    drawPiece(mNextPosX, mNextPosY, mNextPiece, mNextRotation); // Draw the next piece
+    drawBoard();
+    drawPiece(mPosX, mPosY, mPiece, mRotation);
+    drawPiece(mNextPosX, mNextPosY, mNextPiece, mNextRotation);
+    
 };
