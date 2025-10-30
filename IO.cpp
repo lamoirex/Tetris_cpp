@@ -24,12 +24,12 @@ static void boxColor(SDL_Surface *screen, int x1, int y1, int x2, int y2, Uint32
 
 void IO::clearScreen()
 {
-    boxColor(mScreen, 0, 0, mScreen->w - 1, mScreen->h - 1, mColors[BLACK]);
+    boxColor(mScreen, 0, 0, mScreen->w - 1, mScreen->h - 1, 0x08);
 };
 
 void IO::drawRectangle(int pX1, int pY1, int pX2, int pY2, enum color pC)
 {
-    boxColor(mScreen, pX1, pY1, pX2, pY2, mColors[pC]);
+    boxColor(mScreen, pX1, pY1, pX2, pY2, 0x505122);
 };
 
 int IO::getScreenHeight()
